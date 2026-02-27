@@ -101,9 +101,15 @@
       display: flex; align-items: center; justify-content: space-between;
     }
     .nav-logo {
-      font-family: 'Bodoni Moda', serif; font-size: .82rem;
-      font-weight: 400; letter-spacing: .26em; text-transform: uppercase;
+      font-family: 'Bodoni Moda', serif; font-size: .95rem;
+      font-weight: 400; letter-spacing: -.01em; text-transform: none;
       color: rgba(244,237,224,.82);
+    }
+    .nav-ln {
+      font-weight: 900; font-style: italic;
+      background: linear-gradient(135deg, var(--iv) 25%, var(--gl) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
     .nav-links { display: flex; gap: 44px; list-style: none; }
     .nav-links a {
@@ -115,6 +121,11 @@
     .nav-links a:hover { color: rgba(244,237,224,1); }
     /* Dark nav — for light background sections */
     nav.nav-dark .nav-logo { color: rgba(12,11,9,.85); }
+    nav.nav-dark .nav-ln {
+      background: linear-gradient(135deg, rgba(12,11,9,.85) 25%, var(--go) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
     nav.nav-dark .nav-links a { color: rgba(12,11,9,.55); }
     nav.nav-dark .nav-links a:hover { color: rgba(12,11,9,1); }
     nav.nav-dark .nav-drop { background: rgba(244,237,224,.96); border-color: rgba(12,11,9,.12); }
@@ -228,10 +239,25 @@
     }
 
     .h-tagline {
-      font-size: clamp(.9rem, 1.4vw, 1.05rem);
-      font-weight: 300; font-style: italic;
-      line-height: 1.6; color: rgba(244,237,224,.68);
+      font-family: 'Bodoni Moda', serif;
+      font-size: clamp(.85rem, 1.3vw, 1rem);
+      font-weight: 400;
+      line-height: 1.4; color: rgba(244,237,224,.68);
+      letter-spacing: .01em;
       opacity: 0; animation: fadeUp .9s 1s ease forwards;
+      display: flex; flex-direction: column; align-items: flex-start;
+    }
+    .h-tag-line1, .h-tag-line3 {
+      font-style: normal;
+    }
+    .h-tag-accent {
+      font-style: italic; font-weight: 600;
+      font-size: clamp(1.6rem, 2.8vw, 2.2rem);
+      color: #C8B478;
+      display: inline-block;
+      transform: rotate(-4deg);
+      transform-origin: left center;
+      margin: -4px 0 -2px 0;
     }
     .hero-cta {
       display: flex; flex-direction: column; gap: 12px;
@@ -454,6 +480,15 @@
       font-family: 'Bodoni Moda', serif; font-size: 1rem; font-weight: 600;
       color: rgba(244,237,224,.45); line-height: 1.35;
     }
+    .proj-wip-card.active {
+      background: rgba(212,168,67,.06); border-color: rgba(212,168,67,.25);
+      cursor: pointer; transition: border-color .2s, background .2s;
+    }
+    .proj-wip-card.active:hover {
+      background: rgba(212,168,67,.1); border-color: rgba(212,168,67,.4);
+    }
+    .proj-wip-card.active .proj-wip-tag { color: rgba(212,168,67,.65); }
+    .proj-wip-card.active .proj-wip-title { color: rgba(244,237,224,.88); }
     @media(max-width:600px){ .proj-wip-items { grid-template-columns: 1fr; } }
     .pc {
       background: var(--ch); border: 1px solid rgba(255,255,255,.04);
@@ -522,7 +557,7 @@
 
     /* ─── SKILLS ─── */
     #skills { background: var(--cr); padding: 130px 60px; color: var(--ink); }
-    #skills .sec-big { color: rgba(12,11,9,.07); }
+    #skills .sec-big { color: rgba(12,11,9,.50); }
     #skills .sec-idx { color: var(--st); }
     .sk-inner {
       max-width: 1100px; margin: 0 auto;
@@ -562,10 +597,29 @@
     }
     .ab-big {
       font-family: 'Bodoni Moda', serif;
-      font-size: clamp(3.6rem, 6.5vw, 6rem);
-      font-weight: 600; line-height: .96; color: var(--ink);
+      font-weight: 700; color: var(--ink);
+      display: flex; flex-direction: column; align-items: center;
+      gap: 12px; text-align: center;
+      transform: translateY(-30px);
     }
-    .ab-big em { font-style: italic; font-weight: 400; color: var(--st); }
+    .ab-line1 {
+      font-size: clamp(1.8rem, 2.6vw, 2.4rem);
+      line-height: 1.1;
+    }
+    .ab-big em {
+      font-style: italic; font-weight: 900;
+      font-size: clamp(3rem, 4.5vw, 4.2rem);
+      line-height: .9;
+      color: var(--st);
+      display: inline-block;
+      transform: rotate(-3deg);
+      transform-origin: left center;
+    }
+    .ab-line3 {
+      font-size: clamp(1.8rem, 2.6vw, 2.4rem);
+      line-height: 1.1;
+      align-self: flex-end;
+    }
     .ab-text {
       font-size: 1.03rem; font-weight: 300; line-height: 1.9; color: var(--im);
     }
@@ -947,7 +1001,7 @@
 
 <!-- Nav -->
 <nav>
-  <div class="nav-logo">Maya Rubin</div>
+  <div class="nav-logo"><span class="nav-fn">Maya</span> <span class="nav-ln">Rubin</span></div>
   <ul class="nav-links">
     <li><a href="#experience">Experience</a></li>
     <li class="has-drop">
@@ -975,16 +1029,20 @@
     <div id="h-top">
       <span class="h-eyebrow">Product &nbsp;·&nbsp; AI &nbsp;·&nbsp; Systems &nbsp;·&nbsp; Scale</span>
       <span class="h-fn">Maya</span>
-      <span class="h-ln">Rubin.</span>
-      <span class="h-sub">AI-native product builder designing and shipping intelligent systems.</span>
+      <span class="h-ln">Rubin</span><br>
+      <span class="h-eyebrow">AI-native product builder designing and shipping intelligent systems.</span>
     </div>
 
     <!-- Right: tagline + CTA — minimal, right panel -->
     <div id="h-mid">
-      <p class="h-tagline">Technology,<br>obsessively<br>applied.</p>
+      <p class="h-tagline">
+        <span class="h-tag-line1">Technology,</span>
+        <span class="h-tag-accent">obsessively</span>
+        <span class="h-tag-line3">applied.</span>
+      </p>
       <div class="hero-cta">
         <span class="mag-wrap"><a href="#projects" class="btn-g solid">See My Work</a></span>
-        <span class="mag-wrap"><a href="mailto:mr4459@columbia.edu" class="btn-g outline">Contact</a></span>
+        <span class="mag-wrap"><a href="#contact" class="btn-g outline">Contact</a></span>
       </div>
     </div>
   </div>
@@ -1160,7 +1218,7 @@
     <div class="sec-big sr sr-3">Build</div>
     <div class="sec-idx sr sr-u d2">03 of 05</div>
   </div>
-  <p class="proj-sub sr sr-u">Work across research, product, and engineering.</p>
+  <p class="proj-sub sr sr-u">Work across research, product, and design.</p>
 
   <!-- ── Chapter 1: Past Experience ── -->
   <div id="proj-past" class="proj-chapter sr sr-u">
@@ -1179,7 +1237,6 @@
           </div>
           <a href="javascript:void(0)" onclick="event.stopPropagation();openDemo('humor')" class="p-link">View Case Study <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M1 5h8M5.5 1l4 4-4 4"/></svg></a>
         </div>
-        <div class="p-vis">😂</div>
       </div>
 
       <div class="pc" style="grid-column: 1 / -1;" onclick="openDemo('sunm')">
@@ -1232,15 +1289,16 @@
       </div>
 
       <div class="proj-wip-block">
-        <div class="proj-wip-label">More to come</div>
+        <div class="proj-wip-label">In Progress</div>
         <div class="proj-wip-items">
           <div class="proj-wip-card">
             <div class="proj-wip-tag">In Progress &nbsp;·&nbsp; FinTech / Consumer AI</div>
             <div class="proj-wip-title">AI Scam Risk Copilot for Seniors' Financial Transactions</div>
           </div>
-          <div class="proj-wip-card">
+          <div class="proj-wip-card active" onclick="openDemo('sentinel')">
             <div class="proj-wip-tag">In Progress &nbsp;·&nbsp; Investor Intelligence</div>
             <div class="proj-wip-title">AI Sentiment &amp; Trend Intelligence for Investors</div>
+            <a href="javascript:void(0)" onclick="event.stopPropagation();openDemo('sentinel')" class="p-link" style="margin-top:12px;">View Write-Up <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M1 5h8M5.5 1l4 4-4 4"/></svg></a>
           </div>
         </div>
       </div>
@@ -1318,10 +1376,14 @@
   </div>
   <div class="ab-inner">
     <div class="sr sr-u">
-      <div class="ab-pre">Who I Am</div>
-      <h2 class="ab-big">Builder<br>by nature.<br><em>Strategist</em><br>by training.</h2>
+      <h2 class="ab-big">
+        <span class="ab-line1">Builder by nature.</span>
+        <em>Strategist</em>
+        <span class="ab-line3">by training.</span>
+      </h2>
     </div>
     <div class="sr sr-u d2">
+      <div class="ab-pre">Who I Am</div>
       <div class="ab-text">
         <p>I'm a product builder who codes, a technologist who cares deeply about people, and someone who believes the best products are built at the intersection of <strong>creativity, rigor and taste</strong>.</p>
         <p>I’ve deliberately placed myself in demanding environments that require ownership and clarity. That has trained me to move quickly without sacrificing discipline, bring structure to ambiguity, and translate ideas into shipped systems.</p>
@@ -1398,10 +1460,9 @@
 <!-- ═══ FOOTER ═══ -->
 <footer>
   <div class="ft-l">
-    <div class="ft-name">Maya Rubin</div>
+    <div class="ft-name"></div>
   </div>
   <div class="ft-r">
-    <a href="mailto:mr4459@columbia.edu">mr4459@columbia.edu</a>
   </div>
 </footer>
 
@@ -2207,6 +2268,53 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
       </div>
     </div>
 
+  </div>
+</div>
+
+<!-- ═══ WRITE-UP OVERLAY: SENTINEL AI ═══ -->
+<div class="demo-overlay" id="overlay-sentinel">
+  <div class="demo-bar">
+    <button class="demo-bar-back" onclick="closeDemo('sentinel')">
+      <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 5H1M4.5 1L1 5l3.5 4"/></svg>
+      Back to Portfolio
+    </button>
+    <span class="demo-bar-title">SentinelAI</span>
+    <span class="demo-bar-badge">Personal Project</span>
+  </div>
+  <div class="demo-inner">
+
+    <!-- Hero -->
+    <div class="cs-hero">
+      <p class="cs-hero-label">Write-Up &nbsp;·&nbsp; Personal Project</p>
+      <h1 class="cs-hero-title">AI Sentiment &amp; Trend Intelligence for Investors</h1>
+      <p class="cs-hero-subtitle">Real-Time Market Sentiment, Aggregated &amp; Actionable</p>
+    </div>
+
+    <div class="cs-body">
+
+      <!-- 01 Prototype -->
+      <div class="cs-section">
+        <div class="cs-section-marker"><span class="cs-section-num">01 &nbsp; Prototype</span><div class="cs-section-line"></div></div>
+        <h2 class="cs-section-head">What the interface looks like.</h2>
+        <p class="cs-p">A product concept designed in Figma — three core views: the sentiment dashboard, the portfolio &amp; alerts view, and the deep-dive research page. Scroll to explore.</p>
+        <p class="cs-proto-hint"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="5" cy="5" r="4"/><path d="M5 3v2.5L6.5 7"/></svg>Click any image to enlarge</p>
+        <div class="cs-proto-scroll">
+          <div class="cs-proto-item">
+            <img src="Frame1-Dashboard.png" alt="SentinelAI Dashboard" class="cs-proto-img">
+            <div class="cs-proto-caption">Dashboard — Market sentiment overview, trending topics, active alerts &amp; watchlist sentiment tracker</div>
+          </div>
+          <div class="cs-proto-item">
+            <img src="Frame2-Portfolio.png" alt="SentinelAI Portfolio &amp; Alerts" class="cs-proto-img">
+            <div class="cs-proto-caption">Portfolio &amp; Alerts — Holdings sentiment overlay, allocation by sentiment health &amp; configurable alert rules</div>
+          </div>
+          <div class="cs-proto-item">
+            <img src="Frame3-Research.png" alt="SentinelAI Research" class="cs-proto-img">
+            <div class="cs-proto-caption">Research — Sentiment vs. price correlation, AI-scored news analysis &amp; key theme detection with recommendations</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
 </div>
 
