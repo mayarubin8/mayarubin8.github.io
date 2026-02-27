@@ -1543,115 +1543,228 @@ Object.assign(gc.style,{position:'fixed',inset:'0',width:'100vw',height:'100vh',
   requestAnimationFrame(grain);
 })();
 
-/* ══ 3. HERO PARTICLE CANVAS — champagne gold constellation ══ */
+/* ══ 3. HERO PARTICLE CANVAS — enhanced galaxy ══ */
 const hc=document.getElementById('hero-canvas'), hx=hc.getContext('2d');
 function rsz(){ hc.width=innerWidth; hc.height=innerHeight; }
 rsz(); window.addEventListener('resize',rsz);
 
 let mX=innerWidth/2, mY=innerHeight/2, mOn=false, bang=null;
+/* Parallax offset based on mouse position */
+let parX=0, parY=0;
 document.getElementById('hero').addEventListener('click',e=>{ bang={x:e.clientX,y:e.clientY,t:Date.now()}; });
 
+/* ── Nebula clouds ── */
+const nebulae = [];
+for(let i=0;i<5;i++){
+  nebulae.push({
+    x: Math.random()*1.2-.1, y: Math.random()*.8,
+    rx: 180+Math.random()*220, ry: 120+Math.random()*160,
+    c: i<2 ? [195,162,98] : i<4 ? [140,120,80] : [100,80,60],
+    o: .018+Math.random()*.022,
+    phase: Math.random()*Math.PI*2,
+    speed: .0003+Math.random()*.0004
+  });
+}
+
+function drawNebulae(t){
+  nebulae.forEach(n=>{
+    const pulse = 1 + .15*Math.sin(t*.001*n.speed*1000+n.phase);
+    const cx = n.x*hc.width + parX*20;
+    const cy = n.y*hc.height + parY*20;
+    const gr = hx.createRadialGradient(cx,cy,0,cx,cy,n.rx*pulse);
+    gr.addColorStop(0,`rgba(${n.c[0]},${n.c[1]},${n.c[2]},${n.o*pulse})`);
+    gr.addColorStop(.5,`rgba(${n.c[0]},${n.c[1]},${n.c[2]},${n.o*.4*pulse})`);
+    gr.addColorStop(1,'rgba(0,0,0,0)');
+    hx.fillStyle=gr;
+    hx.beginPath(); hx.ellipse(cx,cy,n.rx*pulse,n.ry*pulse,0,0,Math.PI*2); hx.fill();
+  });
+}
+
+/* ── Draw a 4-point star shape ── */
+function drawStar4(cx,cy,outerR,innerR,rot){
+  hx.beginPath();
+  for(let i=0;i<8;i++){
+    const r=i%2===0?outerR:innerR;
+    const a=rot+i*Math.PI/4;
+    const method=i===0?'moveTo':'lineTo';
+    hx[method](cx+Math.cos(a)*r, cy+Math.sin(a)*r);
+  }
+  hx.closePath();
+}
+
+/* ── Particles ── */
 class Pt {
   constructor(a){ this.init(a); }
   init(a){
-    this.z  = Math.pow(Math.random(),1.3);
-    this.sz = this.z*2.2+0.3;
-    this.bo = this.z*0.58+0.06;
+    this.z  = Math.pow(Math.random(),1.1);
+    this.sz = this.z*2.8+0.2;
+    this.bo = this.z*0.62+0.04;
     this.op = this.bo;
     this.x  = Math.random()*hc.width;
     this.y  = a ? Math.random()*hc.height : -30-Math.random()*80;
-    this.vx = (Math.random()-.5)*.2;
-    this.vy = Math.random()*.1+.025;
+    this.vx = (Math.random()-.5)*.18;
+    this.vy = Math.random()*.08+.02;
     const r = Math.random();
-    // 50% ivory, 35% champagne, 15% bright gold
-    this.c = r<.5?0:r<.85?1:2;
+    // 35% ivory, 25% champagne, 20% bright gold, 10% pale blue, 10% warm white
+    this.c = r<.35?0:r<.6?1:r<.8?2:r<.9?3:4;
     this.tw = Math.random()*Math.PI*2;
-    this.ts = Math.random()*.016+.008;
+    this.ts = Math.random()*.018+.006;
+    this.drift = (Math.random()-.5)*.0003;
+    this.rot = Math.random()*Math.PI*2;
+    this.rotSpd = (Math.random()-.5)*.004;
+    // Shape: 0=circle, 1=4-pointed star, 2=cross-flare
+    // Brighter/larger particles more likely to be star-shaped
+    const shapeR = Math.random();
+    if(this.z>.6 && shapeR<.35) this.shape=1;
+    else if(this.z>.75 && shapeR<.5) this.shape=2;
+    else this.shape=0;
   }
   update(t){
-    const tw=.75+.25*Math.sin(t*this.ts+this.tw);
+    const tw=.7+.3*Math.sin(t*this.ts+this.tw);
+    this.vx += this.drift;
+    this.vy += .0002;
+    this.rot += this.rotSpd;
+
     if(mOn){
       const dx=this.x-mX, dy=this.y-mY, d=Math.sqrt(dx*dx+dy*dy);
-      const R=110+this.z*55;
-      if(d<R&&d>0){ const f=Math.pow((R-d)/R,1.5)*4.2*this.z; this.vx+=(dx/d)*f; this.vy+=(dy/d)*f; }
-      this.op = d<65 ? Math.min(1,this.bo+(1-d/65)*.48) : this.bo*tw;
-      this.sz = d<65 ? this.z*2.2+0.3+(1-d/65)*1.1 : this.z*2.2+0.3+(this.sz-(this.z*2.2+0.3))*.9;
+      const R=140+this.z*70;
+      if(d<R&&d>0){ const f=Math.pow((R-d)/R,1.5)*5*this.z; this.vx+=(dx/d)*f; this.vy+=(dy/d)*f; }
+      this.op = d<80 ? Math.min(1,this.bo+(1-d/80)*.55) : this.bo*tw;
+      this.sz = d<80 ? this.z*2.8+0.2+(1-d/80)*1.6 : this.z*2.8+0.2+(this.sz-(this.z*2.8+0.2))*.9;
     } else {
       this.op=this.bo*tw;
-      this.sz+=(this.z*2.2+0.3-this.sz)*.08;
+      this.sz+=(this.z*2.8+0.2-this.sz)*.08;
     }
-    if(bang&&Date.now()-bang.t<90){
+    if(bang&&Date.now()-bang.t<120){
       const dx=this.x-bang.x, dy=this.y-bang.y, d=Math.sqrt(dx*dx+dy*dy);
-      if(d<460&&d>0){ const f=Math.pow((460-d)/460,1.2)*7*(0.4+this.z); this.vx+=(dx/d)*f; this.vy+=(dy/d)*f; }
+      if(d<550&&d>0){ const f=Math.pow((550-d)/550,1.2)*9*(0.4+this.z); this.vx+=(dx/d)*f; this.vy+=(dy/d)*f; }
     }
-    this.vx*=.908; this.vy*=.935;
+    this.vx*=.912; this.vy*=.938;
     this.x+=this.vx; this.y+=this.vy;
-    if(this.x<-30)this.x=hc.width+30;
-    if(this.x>hc.width+30)this.x=-30;
-    if(this.y>hc.height+30)this.init(false);
+    if(this.x<-40)this.x=hc.width+40;
+    if(this.x>hc.width+40)this.x=-40;
+    if(this.y>hc.height+40)this.init(false);
+    if(this.y<-40)this.y=hc.height+40;
   }
   draw(){
     let r,g,b;
     if(this.c===0){r=244;g=237;b=224;}       // ivory
     else if(this.c===1){r=195;g=162;b=98;}   // champagne
-    else{r=215;g=180;b=112;}                  // bright gold
-    if(this.c>0&&this.op>.3){hx.shadowBlur=8;hx.shadowColor='rgba(195,162,98,.42)';}
-    hx.beginPath(); hx.arc(this.x,this.y,Math.max(.1,this.sz),0,Math.PI*2);
-    hx.fillStyle=`rgba(${r},${g},${b},${Math.min(1,this.op)})`; hx.fill(); hx.shadowBlur=0;
+    else if(this.c===2){r=225;g=195;b=130;}  // bright gold
+    else if(this.c===3){r=180;g=200;b=220;}  // pale blue
+    else{r=255;g=252;b=245;}                  // warm white
+
+    const px = this.x + parX * (this.z * 30 + 5);
+    const py = this.y + parY * (this.z * 30 + 5);
+    const col = `rgba(${r},${g},${b},${Math.min(1,this.op)})`;
+    const s = Math.max(.1,this.sz);
+
+    // Glow
+    if(this.op>.2){
+      hx.shadowBlur = this.shape>0 ? 14 : this.c===3 ? 12 : this.c>0 ? 8 : 5;
+      hx.shadowColor = this.c===3 ? 'rgba(180,200,220,.4)' : 'rgba(195,162,98,.45)';
+    }
+
+    if(this.shape===1){
+      // 4-pointed star
+      drawStar4(px,py,s*2.2,s*.45,this.rot);
+      hx.fillStyle=col; hx.fill();
+    } else if(this.shape===2){
+      // Cross-flare: two thin rectangles
+      hx.fillStyle=col;
+      hx.save(); hx.translate(px,py); hx.rotate(this.rot);
+      hx.fillRect(-s*2.5,-.3,s*5,.6);
+      hx.fillRect(-.3,-s*2.5,.6,s*5);
+      hx.restore();
+    } else {
+      // Circle (most particles)
+      hx.beginPath(); hx.arc(px,py,s,0,Math.PI*2);
+      hx.fillStyle=col; hx.fill();
+    }
+    hx.shadowBlur=0;
   }
 }
 
+/* ── Shooting stars ── */
 class SStar {
   constructor(){this.on=false;}
   spawn(){
-    this.x=Math.random()*hc.width*.7; this.y=Math.random()*hc.height*.38;
-    this.len=80+Math.random()*120; this.spd=8+Math.random()*9;
-    this.ang=.72+(Math.random()-.5)*.32; this.al=0; this.dir=1; this.w=.6+Math.random()*1.1; this.on=true;
+    this.x=Math.random()*hc.width*.8; this.y=Math.random()*hc.height*.4;
+    this.len=120+Math.random()*180; this.spd=10+Math.random()*12;
+    this.ang=.65+(Math.random()-.5)*.4; this.al=0; this.dir=1;
+    this.w=.7+Math.random()*1.4; this.on=true;
+    this.bright = Math.random() > .6; // 40% chance of bright shooting star
   }
   update(){
-    if(!this.on)return; this.al+=this.dir*.04;
+    if(!this.on)return; this.al+=this.dir*(this.bright?.035:.04);
     if(this.al>=1){this.al=1;this.dir=-1;}
     if(this.al<=0){this.on=false;return;}
     this.x+=Math.cos(this.ang)*this.spd; this.y+=Math.sin(this.ang)*this.spd;
-    if(this.x>hc.width+120||this.y>hc.height+120)this.on=false;
+    if(this.x>hc.width+150||this.y>hc.height+150)this.on=false;
   }
   draw(){
     if(!this.on)return;
     const tx=this.x-Math.cos(this.ang)*this.len, ty=this.y-Math.sin(this.ang)*this.len;
     const gr=hx.createLinearGradient(tx,ty,this.x,this.y);
     gr.addColorStop(0,'rgba(195,162,98,0)');
-    gr.addColorStop(.7,`rgba(215,180,112,${this.al*.28})`);
-    gr.addColorStop(1,`rgba(244,237,224,${this.al})`);
+    if(this.bright){
+      gr.addColorStop(.5,`rgba(244,237,224,${this.al*.2})`);
+      gr.addColorStop(.85,`rgba(244,237,224,${this.al*.65})`);
+      gr.addColorStop(1,`rgba(255,255,255,${this.al})`);
+    } else {
+      gr.addColorStop(.7,`rgba(215,180,112,${this.al*.28})`);
+      gr.addColorStop(1,`rgba(244,237,224,${this.al})`);
+    }
     hx.beginPath(); hx.moveTo(tx,ty); hx.lineTo(this.x,this.y);
-    hx.strokeStyle=gr; hx.lineWidth=this.w; hx.stroke();
-  }
-}
-
-const PTS=160; const pts=Array.from({length:PTS},(_,i)=>new Pt(true));
-pts.sort((a,b)=>a.z-b.z);
-const ss=[new SStar(),new SStar(),new SStar()]; let lastS=0;
-
-function drawConns(){
-  const D=82;
-  for(let i=0;i<pts.length;i++){
-    for(let j=i+1;j<pts.length;j++){
-      const dx=pts[i].x-pts[j].x; if(Math.abs(dx)>D)continue;
-      const dy=pts[i].y-pts[j].y, d=Math.sqrt(dx*dx+dy*dy); if(d>D)continue;
-      const dep=(pts[i].z+pts[j].z)*.5, a=(1-d/D)*dep*.14;
-      hx.beginPath(); hx.moveTo(pts[i].x,pts[i].y); hx.lineTo(pts[j].x,pts[j].y);
-      hx.strokeStyle=`rgba(195,162,98,${a})`; hx.lineWidth=.35; hx.stroke();
+    hx.strokeStyle=gr; hx.lineWidth=this.bright?this.w*1.3:this.w; hx.stroke();
+    // Head glow for bright stars
+    if(this.bright && this.al>.4){
+      hx.shadowBlur=14; hx.shadowColor='rgba(244,237,224,.6)';
+      hx.beginPath(); hx.arc(this.x,this.y,1.5,0,Math.PI*2);
+      hx.fillStyle=`rgba(255,255,255,${this.al*.8})`; hx.fill(); hx.shadowBlur=0;
     }
   }
 }
 
+const PTS=500; const pts=Array.from({length:PTS},(_,i)=>new Pt(true));
+pts.sort((a,b)=>a.z-b.z);
+const ss=[new SStar(),new SStar(),new SStar(),new SStar(),new SStar()]; let lastS=0;
+
+function drawConns(){
+  const D=100;
+  for(let i=0;i<pts.length;i++){
+    if(pts[i].z<.25)continue; // only connect foreground particles
+    for(let j=i+1;j<pts.length;j++){
+      if(pts[j].z<.25)continue;
+      const px1=pts[i].x+parX*(pts[i].z*30+5), py1=pts[i].y+parY*(pts[i].z*30+5);
+      const px2=pts[j].x+parX*(pts[j].z*30+5), py2=pts[j].y+parY*(pts[j].z*30+5);
+      const dx=px1-px2; if(Math.abs(dx)>D)continue;
+      const dy=py1-py2, d=Math.sqrt(dx*dx+dy*dy); if(d>D)continue;
+      const dep=(pts[i].z+pts[j].z)*.5, a=(1-d/D)*dep*.18;
+      hx.beginPath(); hx.moveTo(px1,py1); hx.lineTo(px2,py2);
+      hx.strokeStyle=`rgba(195,162,98,${a})`; hx.lineWidth=.4; hx.stroke();
+    }
+  }
+}
+
+/* ── Parallax mouse tracking ── */
+document.getElementById('hero').addEventListener('mousemove',e=>{
+  const cx=hc.width/2, cy=hc.height/2;
+  parX=(e.clientX-cx)/cx; parY=(e.clientY-cy)/cy;
+});
+document.getElementById('hero').addEventListener('mouseleave',()=>{ parX=0; parY=0; });
+
 (function loop(t){
   hx.clearRect(0,0,hc.width,hc.height);
+  // Smooth parallax lerp
+  parX+=(parX-parX)*.05; parY+=(parY-parY)*.05;
+  drawNebulae(t);
   drawConns();
   const now=Date.now();
-  if(now-lastS>2000+Math.random()*2400){const i=ss.find(s=>!s.on);if(i){i.spawn();lastS=now;}}
+  if(now-lastS>1200+Math.random()*1800){const i=ss.find(s=>!s.on);if(i){i.spawn();lastS=now;}}
   ss.forEach(s=>{s.update();s.draw();});
   pts.forEach(p=>{p.update(t*.001);p.draw();});
-  if(bang&&Date.now()-bang.t>130)bang=null;
+  if(bang&&Date.now()-bang.t>160)bang=null;
   requestAnimationFrame(loop);
 })(0);
 
