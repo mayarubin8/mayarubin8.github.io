@@ -1405,7 +1405,7 @@
         <div class="card-hl"></div>
         <div class="p-num">Start-Up Nation Mentorship</div>
         <h3 class="p-title">Mentor–Student Matching Engine</h3>
-        <p class="p-desc">Designed and built the matching infrastructure powering 500+ annual mentor–student pairings across tech, finance, healthcare, and consumer sectors. A classic multi-sided marketplace problem: weighted compatibility scoring, cross-sector supply constraints, cold-start handling for new users, and a deliberate balance between algorithmic precision and human oversight — the same tradeoffs that define every platform connecting supply to demand at scale.</p>
+        <p class="p-desc">Designed and built the matching infrastructure powering 500+ annual mentor–student pairings across tech, finance, healthcare, and consumer sectors. The system scores compatibility across multiple weighted factors while navigating cross-sector supply constraints — balancing algorithmic precision with human oversight.</p>
         <div class="p-tags"><span class="p-tag">Matching Systems</span><span class="p-tag">Two-Sided Marketplace</span><span class="p-tag">Python</span><span class="p-tag">Algorithms</span><span class="p-tag">Platform</span></div>
         <a href="javascript:void(0)" onclick="event.stopPropagation();openDemo('sunm')" class="p-link">View Case Study <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M1 5h8M5.5 1l4 4-4 4"/></svg></a>
       </div>
@@ -2277,7 +2277,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
         <h2 class="cs-section-head">Manual pairing doesn't scale.</h2>
         <p class="cs-p">Start-Up Nation Mentorship connects 500+ students with professional mentors each year. As the program grew, <span class="cs-hl">match quality degraded — misalignment between student goals and mentor expertise, uneven availability across industries, and increasing manual overhead.</span></p>
         <div class="cs-hypothesis">
-          <p class="cs-hypothesis-text">"If compatibility is formalized into a weighted framework — industry alignment, experience level, goals — match satisfaction improves while reducing time-to-match."</p>
+          <p class="cs-hypothesis-text">If compatibility is formalized into a weighted framework — industry alignment, career goals, skill focus, stated preferences — match satisfaction improves while reducing time-to-match.</p>
         </div>
       </div>
 
@@ -2286,10 +2286,10 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
         <div class="cs-section-marker"><span class="cs-section-num">02 &nbsp; Approach</span><div class="cs-section-line"></div></div>
         <h2 class="cs-section-head">A scoring-based system with human oversight.</h2>
         <ul class="cs-ul">
-          <li>Categorized mentors and students by sector, expertise, and professional interests</li>
-          <li><span class="cs-hl">Defined weighted compatibility factors</span> — industry alignment, career goals, skill focus, stated preferences</li>
-          <li>Standardized intake data to improve signal quality</li>
-          <li>Automated initial pairing recommendations with a human review layer for final decisions</li>
+          <li>Structured intake forms to capture consistent, scorable signals from both sides of the marketplace</li>
+          <li><span class="cs-hl">Tuned factor weights</span> to reflect which dimensions most reliably predicted match success</li>
+          <li>Built a scoring engine that ranks every possible student–mentor pair, then optimizes assignments across the full cohort — not just greedy top-match-first</li>
+          <li>Surfaced ranked recommendations to coordinators for a single review pass, preserving human judgment as the final layer</li>
         </ul>
       </div>
 
@@ -2311,8 +2311,8 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
             <div class="cs-card-body">Rushed matches produce lower engagement. Time-to-match was a metric, not the metric.</div>
           </div>
           <div class="cs-card">
-            <div class="cs-card-title">Cold-Start Problem</div>
-            <div class="cs-card-body">New participants with limited data need graceful degradation, not silent failure.</div>
+            <div class="cs-card-title">Individual Fit vs. Global Fairness</div>
+            <div class="cs-card-body">Optimizing for the highest-scoring pairs first can leave remaining participants with weaker options. The system balances top-match quality against equitable outcomes across the full cohort.</div>
           </div>
         </div>
       </div>
@@ -2322,9 +2322,9 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
         <div class="cs-section-marker"><span class="cs-section-num">04 &nbsp; Outcome</span><div class="cs-section-line"></div></div>
         <h2 class="cs-section-head">From coordination to infrastructure.</h2>
         <div class="cs-outcome-box">
-          <p class="cs-p"><span class="cs-hl">The system supported 500+ annual pairings while reducing coordinator workload from weeks of manual review to a single review pass</span> on algorithmically ranked recommendations.</p>
+          <p class="cs-p"><span class="cs-hl">The system supported 500+ annual pairings while reducing coordinator workload from weeks of manual review to a single review pass</span> on algorithmically ranked recommendations. The matching engine was adopted as permanent program infrastructure, running each annual cycle with minimal adjustment.</p>
         </div>
-        <p class="cs-closing">Structured input data is often the hardest part. The algorithm is secondary to the quality of signals it receives — and in a two-sided marketplace, that cost compounds on both sides.</p>
+        <p class="cs-closing">The hardest part wasn't the algorithm — it was structuring the intake data well enough to make scoring meaningful.</p>
       </div>
 
     </div>
