@@ -1243,13 +1243,33 @@
 <section id="experience">
   <div class="sec-head">
     <div class="sec-big sr sr-3">Experience</div>
-    <div class="sec-idx sr sr-u d2">02 of 05</div>
+    <div class="sec-idx sr sr-u d2">02 of 06</div>
   </div>
   <div class="exp-list">
 
     <div class="exp-row">
       <div class="exp-row-top">
         <span class="exp-n">01</span>
+        <div class="exp-main">
+          <div class="exp-co">Nearwise</div>
+          <div class="exp-title">Co-founder — Product & Design</div>
+        </div>
+        <div class="exp-right">
+          <span class="exp-period">2026 — Present</span>
+          <span class="exp-ind">+</span>
+        </div>
+      </div>
+      <div class="exp-body">
+        <div class="exp-body-in">
+          <p>Define the product vision and lead end-to-end design across mobile, web, and voice interfaces — shaping how every interaction feels for both seniors and their families. Own the full product lifecycle from user research and wireframes through high-fidelity prototypes and shipped UI.</p>
+          <span class="exp-tag">Product & Design</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-row">
+      <div class="exp-row-top">
+        <span class="exp-n">02</span>
         <div class="exp-main">
           <div class="exp-co">Start-Up Nation Mentorship</div>
           <div class="exp-title">CTO</div>
@@ -1269,7 +1289,7 @@
 
     <div class="exp-row">
       <div class="exp-row-top">
-        <span class="exp-n">02</span>
+        <span class="exp-n">03</span>
         <div class="exp-main">
           <div class="exp-co">The Humor Project</div>
           <div class="exp-title">AI Product Engineer</div>
@@ -1309,7 +1329,7 @@
 
     <div class="exp-row">
       <div class="exp-row-top">
-        <span class="exp-n">03</span>
+        <span class="exp-n">05</span>
         <div class="exp-main">
           <div class="exp-co">The Squadron</div>
           <div class="exp-title">Product Manager</div>
@@ -1329,7 +1349,7 @@
 
     <div class="exp-row">
       <div class="exp-row-top">
-        <span class="exp-n">05</span>
+        <span class="exp-n">06</span>
         <div class="exp-main">
           <div class="exp-co">IDF</div>
           <div class="exp-title">F-35 Flight Simulator Instructor</div>
@@ -1379,7 +1399,7 @@
           <a href="javascript:void(0)" onclick="event.stopPropagation();openDemo('nearwise')" class="p-link">View Case Study <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M1 5h8M5.5 1l4 4-4 4"/></svg></a>
         </div>
         <div class="phone-frame">
-          <img src="nearwise-today-screen.png" alt="Nearwise — Today Screen">
+          <img src="images/projects/nearwise-today-screen.png" alt="Nearwise — Today Screen">
         </div>
       </div>
 
@@ -1539,7 +1559,7 @@
   <div class="ct-inner">
 
     <div class="ct-photo-wrap sr sr-u">
-      <img src="pic.JPG" alt="Maya Rubin" class="ct-photo">
+      <img src="images/pic.JPG" alt="Maya Rubin" class="ct-photo">
       <div class="ct-photo-ring"></div>
       <div class="ct-photo-ring2"></div>
     </div>
@@ -1599,6 +1619,40 @@
 </footer>
 
 <script>
+/* ── Cursor (runs immediately, no dependencies) ── */
+(function initCursor(){
+  const dot=document.getElementById('c-dot'), ring=document.getElementById('c-ring');
+  if(!dot||!ring) return;
+  let curX=0,curY=0,ringX=0,ringY=0;
+  document.addEventListener('mousemove',e=>{
+    curX=e.clientX; curY=e.clientY;
+    dot.style.left=curX+'px'; dot.style.top=curY+'px';
+  });
+  (function cursorLoop(){
+    ringX+=(curX-ringX)*.45; ringY+=(curY-ringY)*.45;
+    ring.style.left=ringX+'px'; ring.style.top=ringY+'px';
+    requestAnimationFrame(cursorLoop);
+  })();
+  document.querySelectorAll('a,button,.sk-pill').forEach(el=>{
+    el.addEventListener('mouseenter',()=>document.body.classList.add('c-h'));
+    el.addEventListener('mouseleave',()=>document.body.classList.remove('c-h'));
+  });
+  document.querySelectorAll('.pc').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{document.body.classList.add('c-v');document.body.classList.remove('c-h');});
+    el.addEventListener('mouseleave',()=>document.body.classList.remove('c-v'));
+  });
+})();
+</script>
+
+<script>
+/* Wait for external libs before running GSAP/Lenis-dependent code */
+(function waitForLibs(){
+  if(typeof gsap==='undefined'||typeof Lenis==='undefined'||typeof ScrollTrigger==='undefined'||typeof SplitType==='undefined'){
+    return setTimeout(waitForLibs, 50);
+  }
+  initMain();
+})();
+function initMain(){
 /* ══ 1. LENIS + GSAP ══ */
 var lenis = new Lenis({ duration:1.35, easing: t => Math.min(1,1.001-Math.pow(2,-10*t)) });
 gsap.registerPlugin(ScrollTrigger);
@@ -1912,26 +1966,7 @@ let tX=0,tY=0,cX=0,cY=0;
 document.addEventListener('mousemove',e=>{tX=(e.clientX/innerWidth-.5)*2;tY=(e.clientY/innerHeight-.5)*2;});
 (function px(){cX+=(tX-cX)*.055;cY+=(tY-cY)*.055;hTop.style.transform=`translate(${cX*-14}px,${cY*-8}px)`;hMid.style.transform=`translate(${cX*-8}px,${cY*-4}px)`;requestAnimationFrame(px);})();
 
-/* ══ 6. CURSOR ══ */
-const dot=document.getElementById('c-dot'), ring=document.getElementById('c-ring');
-let curX=0,curY=0,ringX=0,ringY=0;
-document.addEventListener('mousemove',e=>{
-  curX=e.clientX; curY=e.clientY;
-  dot.style.left=curX+'px'; dot.style.top=curY+'px';
-});
-(function cursorLoop(){
-  ringX+=(curX-ringX)*.45; ringY+=(curY-ringY)*.45;
-  ring.style.left=ringX+'px'; ring.style.top=ringY+'px';
-  requestAnimationFrame(cursorLoop);
-})();
-document.querySelectorAll('a,button,.sk-pill').forEach(el=>{
-  el.addEventListener('mouseenter',()=>document.body.classList.add('c-h'));
-  el.addEventListener('mouseleave',()=>document.body.classList.remove('c-h'));
-});
-document.querySelectorAll('.pc').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{document.body.classList.add('c-v');document.body.classList.remove('c-h');});
-  el.addEventListener('mouseleave',()=>document.body.classList.remove('c-v'));
-});
+/* (cursor code moved to its own <script> block above) */
 
 /* ══ 7. MAGNETIC BUTTONS ══ */
 document.querySelectorAll('.mag-wrap').forEach(w=>{
@@ -2050,6 +2085,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
     try{const t=document.querySelector(h);if(t){e.preventDefault();lenis.scrollTo(t,{offset:-68});}}catch(err){}
   });
 });
+} /* end initMain */
 </script>
 
 
@@ -2206,23 +2242,23 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
         <p class="cs-proto-hint"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="5" cy="5" r="4"/><path d="M5 3v2.5L6.5 7"/></svg>Click any image to enlarge</p>
         <div class="cs-proto-scroll">
           <div class="cs-proto-item">
-            <img src="TA-Dashboard.png" alt="AI TA Dashboard" class="cs-proto-img">
+            <img src="images/projects/TA-Dashboard.png" alt="AI TA Dashboard" class="cs-proto-img">
             <div class="cs-proto-caption">Dashboard — Live grading status, AI confidence distribution &amp; common mistake detection</div>
           </div>
           <div class="cs-proto-item">
-            <img src="TA-rubric1.png" alt="Rubric Builder" class="cs-proto-img">
+            <img src="images/projects/TA-rubric1.png" alt="Rubric Builder" class="cs-proto-img">
             <div class="cs-proto-caption">Rubric Builder — Criteria definition, point allocation &amp; AI evaluation parameters</div>
           </div>
           <div class="cs-proto-item">
-            <img src="TA-rubric2.png" alt="Rubric Builder — AI Modes" class="cs-proto-img">
+            <img src="images/projects/TA-rubric2.png" alt="Rubric Builder — AI Modes" class="cs-proto-img">
             <div class="cs-proto-caption">Rubric Builder — AI grading modes (Strict / Generous) &amp; escalation threshold configuration</div>
           </div>
           <div class="cs-proto-item">
-            <img src="TA-integration1.png" alt="LMS Integration" class="cs-proto-img">
+            <img src="images/projects/TA-integration1.png" alt="LMS Integration" class="cs-proto-img">
             <div class="cs-proto-caption">LMS Integration — Canvas &amp; GradeScope sync, grade distribution &amp; feedback preview</div>
           </div>
           <div class="cs-proto-item">
-            <img src="TA-integration2.png" alt="LMS Integration — Audit Log" class="cs-proto-img">
+            <img src="images/projects/TA-integration2.png" alt="LMS Integration — Audit Log" class="cs-proto-img">
             <div class="cs-proto-caption">LMS Integration — Audit log &amp; data privacy compliance (FERPA, Human Oversight, no training data)</div>
           </div>
         </div>
@@ -2421,19 +2457,19 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
         <p class="cs-proto-hint"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="5" cy="5" r="4"/><path d="M5 3v2.5L6.5 7"/></svg>Click any image to enlarge</p>
         <div class="cs-proto-scroll">
           <div class="cs-proto-item" style="max-width:220px;">
-            <img src="nearwise-today-screen.png" alt="Nearwise Today Screen" class="cs-proto-img" style="border-radius:16px;">
+            <img src="images/projects/nearwise-today-screen.png" alt="Nearwise Today Screen" class="cs-proto-img" style="border-radius:16px;">
             <div class="cs-proto-caption">Today — Daily snapshot with sleep, mood, meals, medication, activity &amp; social engagement at a glance</div>
           </div>
           <div class="cs-proto-item" style="max-width:220px;">
-            <img src="nearwise-insights-screen.png" alt="Nearwise Insights Screen" class="cs-proto-img" style="border-radius:16px;">
+            <img src="images/projects/nearwise-insights-screen.png" alt="Nearwise Insights Screen" class="cs-proto-img" style="border-radius:16px;">
             <div class="cs-proto-caption">Insights — Cross-referenced patterns connecting medication, symptoms &amp; behavior</div>
           </div>
           <div class="cs-proto-item" style="max-width:220px;">
-            <img src="nearwise-health-screen.png" alt="Nearwise Health Screen" class="cs-proto-img" style="border-radius:16px;">
+            <img src="images/projects/nearwise-health-screen.png" alt="Nearwise Health Screen" class="cs-proto-img" style="border-radius:16px;">
             <div class="cs-proto-caption">Health — Medication adherence, symptoms, appetite &amp; activity tracking over time</div>
           </div>
           <div class="cs-proto-item" style="max-width:220px;">
-            <img src="nearwise-settings-screen.png" alt="Nearwise Settings Screen" class="cs-proto-img" style="border-radius:16px;">
+            <img src="images/projects/nearwise-settings-screen.png" alt="Nearwise Settings Screen" class="cs-proto-img" style="border-radius:16px;">
             <div class="cs-proto-caption">Settings — Communication preferences, alert thresholds &amp; family member access</div>
           </div>
         </div>

@@ -1,0 +1,13 @@
+.DS_Store
+PD/
+PM/
+old/
+encrypted/
+ta-copilot/
+demos/
+docs/
+scripts/
+deploy.sh
+update.sh
+*.pdf
+*.docx
